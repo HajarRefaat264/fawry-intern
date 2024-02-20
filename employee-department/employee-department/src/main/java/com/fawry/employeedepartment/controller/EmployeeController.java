@@ -1,13 +1,14 @@
 package com.fawry.employeedepartment.controller;
 
+import com.fawry.employeedepartment.common.EmployeeModel;
 import com.fawry.employeedepartment.entity.EmployeeEntity;
-
+import com.fawry.employeedepartment.entity.DepartmentEntity;
 import com.fawry.employeedepartment.service.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,8 +29,29 @@ public class EmployeeController {
         return employeeService.getEmployeeById(id);
     }
 
-    @GetMapping("/byDepartment/{departmentId}")
-    public List<EmployeeEntity> getEmployeesByDepartment(@PathVariable Long departmentId) {
-        return employeeService.getEmployeesByDepartment(departmentId);
+    @GetMapping("/byDepartment/{id}")
+    public List<EmployeeEntity> getEmployeesByDepartment(@PathVariable Long id) {
+        return employeeService.getEmployeesByDepartment(id);
+    }
+    @GetMapping("/search")
+    public List<EmployeeEntity> searchEmployees(@RequestParam String query) {
+        return employeeService.searchEmployees(query);
+    }
+    @GetMapping("/all")
+    public Page<EmployeeEntity> getAllEmployees(@RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return employeeService.getAllEmployees(pageable);
+    }
+    @PostMapping("/create")
+    public EmployeeEntity createEmployee(@RequestBody EmployeeModel employeeRequest) {
+        EmployeeEntity employee = new EmployeeEntity();
+        employee.setFirst_name(employeeRequest.getFirst_name());
+        employee.setLast_name(employeeRequest.getLast_name());
+        DepartmentEntity department = new DepartmentEntity();
+        department.setId(employeeRequest.getDepartmentId());
+        employee.setDepartment(department);
+
+        return employeeService.saveEmployee(employee);
     }
 }

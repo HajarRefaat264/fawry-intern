@@ -5,8 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-@Repository
+
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
-    List<EmployeeEntity> findByDepartmentId(Long departmentId);
+    List<EmployeeEntity> findByDepartmentId(Long id);
+
+
+    List<EmployeeEntity> findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String query, String query1);
 }
 

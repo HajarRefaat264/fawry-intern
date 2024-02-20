@@ -8,10 +8,11 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "department")
 public class DepartmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long department_id;
+    private Long id;
 
     private String name;
 
