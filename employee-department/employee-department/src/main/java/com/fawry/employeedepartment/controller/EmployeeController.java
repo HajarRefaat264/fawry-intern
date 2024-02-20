@@ -3,6 +3,7 @@ package com.fawry.employeedepartment.controller;
 import com.fawry.employeedepartment.common.EmployeeModel;
 import com.fawry.employeedepartment.entity.EmployeeEntity;
 import com.fawry.employeedepartment.entity.DepartmentEntity;
+import com.fawry.employeedepartment.service.DepartmentServiceImpl;
 import com.fawry.employeedepartment.service.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,8 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeServiceImpl employeeService;
+    @Autowired
+    DepartmentServiceImpl departmentService;
 
     @GetMapping
     public List<EmployeeEntity> getAllEmployees() {
@@ -44,13 +47,23 @@ public class EmployeeController {
         return employeeService.getAllEmployees(pageable);
     }
     @PostMapping("/create")
-    public EmployeeEntity createEmployee(@RequestBody EmployeeModel employeeRequest) {
+    public EmployeeEntity createEmployee(
+            @RequestParam String firstName,
+            @RequestParam String lastName,
+            @RequestParam Long departmentId
+    ) {
         EmployeeEntity employee = new EmployeeEntity();
-        employee.setFirst_name(employeeRequest.getFirst_name());
-        employee.setLast_name(employeeRequest.getLast_name());
-        DepartmentEntity department = new DepartmentEntity();
-        department.setId(employeeRequest.getDepartmentId());
-        employee.setDepartment(department);
+        employee.setFirst_name(firstName);
+        employee.setLast_name(lastName);
+
+
+//        DepartmentEntity department = new DepartmentEntity();
+//        department.setId(departmentId);
+       // employee.setDepartment(department);
+
+
+         DepartmentEntity departmentanother = departmentService.findById(departmentId);
+         employee.setDepartment(departmentanother);
 
         return employeeService.saveEmployee(employee);
     }
