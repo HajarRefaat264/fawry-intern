@@ -1,0 +1,8 @@
+org\repos\BranchesRepository.class
+org\repos\ProductSizesRepository.class
+org\repos\CategoriesRepository.class
+org\repos\BrandsRepository.class
+org\repos\SizesRepository.class
+org\repos\ProductsRepository.class
+org\repos\ZonesRepository.class
+org\repos\CitiesRepository.class
